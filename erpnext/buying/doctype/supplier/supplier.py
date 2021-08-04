@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 import frappe.defaults
+from frappe.utils import cint, cstr
 from frappe import msgprint, _
 from frappe.model.naming import set_name_by_naming_series
 from frappe.contacts.address_and_contact import load_address_and_contact, delete_contact_and_address
@@ -34,9 +35,25 @@ class Supplier(TransactionBase):
 	def autoname(self):
 		supp_master_name = frappe.defaults.get_global_default('supp_master_name')
 		if supp_master_name == 'Supplier Name':
-			self.name = self.supplier_name
+			self.name = self.get_supplier_name()
 		else:
 			set_name_by_naming_series(self)
+
+	def get_supplier_name(self):
+		if frappe.db.get_value("Supplier", self.supplier_name) and not frappe.flags.in_import:
+			count = frappe.db.sql("""select ifnull(MAX(CAST(SUBSTRING_INDEX(name, ' ', -1) AS UNSIGNED)), 0) from tabSupplier
+				 where name like %s""", "%{0} - %".format(self.supplier_name), as_list=1)[0][0]
+			count = cint(count) + 1
+
+			new_supplier_name = "{0} - {1}".format(self.supplier_name, cstr(count))
+
+			msgprint(_("Changed Supplier name to '{}' as '{}' already exists.")
+					.format(new_supplier_name, self.supplier_name),
+					title=_("Note"), indicator="yellow")
+
+			return new_supplier_name
+
+		return self.supplier_name
 
 	def on_update(self):
 		if not self.naming_series:
