@@ -19,6 +19,7 @@ from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.accounts.doctype.sales_invoice.sales_invoice import validate_inter_company_party, update_linked_doc,\
 	unlink_inter_company_doc
+from praman_app.utils.custom_validations import validate_supplier_presence
 
 form_grid_templates = {
 	"items": "templates/form_grid/item_grid.html"
@@ -40,10 +41,11 @@ class PurchaseOrder(BuyingController):
 		}]
 
 	def validate(self):
+
 		super(PurchaseOrder, self).validate()
 
 		self.set_status()
-
+		validate_supplier_presence(self, None)
 		self.validate_supplier()
 		self.validate_schedule_date()
 		validate_for_items(self)
