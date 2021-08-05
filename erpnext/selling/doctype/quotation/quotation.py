@@ -166,7 +166,10 @@ def _make_sales_order(source_name, target_doc=None, ignore_permissions=False):
 				"doctype": "Sales Order",
 				"validation": {
 					"docstatus": ["=", 1]
-				}
+				},
+				"field_map": {
+					"delivery_date": "delivery_date"
+				},
 			},
 			"Quotation Item": {
 				"doctype": "Sales Order Item",

@@ -1,4 +1,6 @@
 frappe.listview_settings['Purchase Order'] = {
+	hide_name_column: true,
+	hide_status_column: true,
 	add_fields: ["base_grand_total", "company", "currency", "supplier",
 		"supplier_name", "per_received", "per_billed", "status"],
 	get_indicator: function (doc) {
