@@ -170,6 +170,7 @@
    "bold": 1,
    "fieldname": "supplier",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_global_search": 1,
    "in_standard_filter": 1,
    "label": "Supplier",
@@ -177,7 +178,6 @@
    "oldfieldtype": "Link",
    "options": "Supplier",
    "print_hide": 1,
-   "reqd": 1,
    "search_index": 1
   },
   {
@@ -1124,7 +1124,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-01-20 22:07:23.487138",
+ "modified": "2021-08-05 12:57:12.065726",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",
