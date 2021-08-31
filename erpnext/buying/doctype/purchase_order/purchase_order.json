@@ -863,6 +863,7 @@
    "options": "Payment Terms Template"
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "payment_schedule",
    "fieldtype": "Table",
    "label": "Payment Schedule",
@@ -1124,7 +1125,7 @@
  "idx": 105,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-05 12:57:12.065726",
+ "modified": "2021-08-24 18:40:25.085285",
  "modified_by": "Administrator",
  "module": "Buying",
  "name": "Purchase Order",
