@@ -93,7 +93,7 @@ frappe.ui.form.on('Payment Entry', {
 
 		frm.set_query("reference_doctype", "references", function() {
 			if (frm.doc.party_type == "Customer") {
-				var doctypes = ["Sales Order", "Sales Invoice", "Journal Entry", "Dunning"];
+				var doctypes = ["Sales Order", "Sales Invoice", "Journal Entry", "Dunning","Purchase Order"];
 			} else if (frm.doc.party_type == "Supplier") {
 				var doctypes = ["Purchase Order", "Purchase Invoice", "Journal Entry"];
 			} else if (frm.doc.party_type == "Employee") {

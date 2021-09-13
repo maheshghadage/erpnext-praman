@@ -50,8 +50,8 @@ class PaymentEntry(AccountsController):
 		self.validate_party_details()
 		self.validate_bank_accounts()
 		self.set_exchange_rate()
-		self.validate_mandatory()
-		self.validate_reference_documents()
+		#self.validate_mandatory()
+		#self.validate_reference_documents()
 		self.set_amounts()
 		self.clear_unallocated_reference_document_rows()
 		self.validate_payment_against_negative_invoice()
@@ -68,7 +68,7 @@ class PaymentEntry(AccountsController):
 		self.setup_party_account_field()
 		if self.difference_amount:
 			frappe.throw(_("Difference Amount must be zero"))
-		self.make_gl_entries()
+		#self.make_gl_entries()
 		self.update_outstanding_amounts()
 		self.update_advance_paid()
 		self.update_expense_claim()
@@ -1153,13 +1153,22 @@ def get_payment_entry(dt, dn, party_amount=None, bank_account=None, bank_amount=
 	paid_amount, received_amount, discount_amount = apply_early_payment_discount(paid_amount, received_amount, doc)
 
 	pe = frappe.new_doc("Payment Entry")
-	pe.payment_type = payment_type
+	if dt=="Purchase Order":
+		pe.payment_type = "Receive"
+	else:
+		pe.payment_type = payment_type
 	pe.company = doc.company
 	pe.cost_center = doc.get("cost_center")
 	pe.posting_date = nowdate()
 	pe.mode_of_payment = doc.get("mode_of_payment")
-	pe.party_type = party_type
-	pe.party = doc.get(scrub(party_type))
+	if  dt=="Purchase Order":
+		pe.party_type = "Customer"
+	else:
+		pe.party_type=party_type
+	if dt=="Purchase Order":
+		pe.party=frappe.db.get_value("Purchase Order",dn, "buyer_name_")
+	else:
+		pe.party = doc.get(scrub(party_type))
 	pe.contact_person = doc.get("contact_person")
 	pe.contact_email = doc.get("contact_email")
 	pe.ensure_supplier_is_not_blocked()
@@ -1234,7 +1243,13 @@ def get_payment_entry(dt, dn, party_amount=None, bank_account=None, bank_amount=
 				'amount': discount_amount * (-1 if payment_type == "Pay" else 1)
 			})
 			pe.set_difference_amount()
-
+	pe.append("references", {
+					'reference_doctype': dt,
+					'reference_name': dn,
+					"outstanding_amount":1,
+			                "total_amount:":1,
+			
+				})
 	return pe
 
 def get_bank_cash_account(doc, bank_account):
