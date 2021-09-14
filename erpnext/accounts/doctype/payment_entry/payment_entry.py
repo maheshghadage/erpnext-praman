@@ -67,8 +67,8 @@ class PaymentEntry(AccountsController):
 
 	def on_submit(self):
 		self.setup_party_account_field()
-		if self.difference_amount:
-			frappe.throw(_("Difference Amount must be zero"))
+		#if self.difference_amount:
+		#	frappe.throw(_("Difference Amount must be zero"))
 		#self.make_gl_entries()
 		self.update_outstanding_amounts()
 		self.update_advance_paid()
