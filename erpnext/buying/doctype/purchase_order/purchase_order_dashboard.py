@@ -22,14 +22,14 @@ def get_data():
 			{
 				'label': _('Payment'),
 				'items': ['Payment Entry', 'Journal Entry']
-			},
-			{
-				'label': _('Reference'),
-				'items': ['Material Request', 'Supplier Quotation', 'Project', 'Auto Repeat']
-			},
-			{
-				'label': _('Sub-contracting'),
-				'items': ['Stock Entry']
-			},
+			}
+			#{
+			#	'label': _('Reference'),
+			#	'items': ['Material Request', 'Supplier Quotation', 'Project', 'Auto Repeat']
+			#},
+			#{
+			#	'label': _('Sub-contracting'),
+			#	'items': ['Stock Entry']
+			#},
 		]
 	}
