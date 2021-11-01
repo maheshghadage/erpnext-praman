@@ -36,7 +36,7 @@ class Customer(TransactionBase):
 			self.name = self.get_customer_name()
 		else:
 			set_name_by_naming_series(self)
-
+	
 	def get_customer_name(self):
 
 		if frappe.db.get_value("Customer", self.customer_name) and not frappe.flags.in_import:
@@ -59,6 +59,10 @@ class Customer(TransactionBase):
 		self.update_lead_status()
 
 	def validate(self):
+		#code for  veried date set
+		vs=frappe.db.sql("""select data from `tabVersion` where ref_doctype="Customer" and docname="{}"    """.format(self.name),as_dict=1)
+		if  vs[0]['data'].find('Verified') and self.status=="Verified":
+			self.db_set("varified_date",frappe.utils.nowdate(), update_modified=False)
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
