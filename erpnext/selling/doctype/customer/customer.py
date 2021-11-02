@@ -61,8 +61,9 @@ class Customer(TransactionBase):
 	def validate(self):
 		#code for  veried date set
 		vs=frappe.db.sql("""select data from `tabVersion` where ref_doctype="Customer" and docname="{}"    """.format(self.name),as_dict=1)
-		if  vs[0]['data'].find('Verified') and self.status=="Verified":
-			self.db_set("varified_date",frappe.utils.nowdate(), update_modified=False)
+		if len(vs)!=0:
+			if  vs[0]['data'].find('Verified') and self.status=="Verified":
+				self.db_set("varified_date",frappe.utils.nowdate(), update_modified=False)
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
