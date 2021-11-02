@@ -15,6 +15,7 @@ from frappe.contacts.address_and_contact import load_address_and_contact, delete
 from frappe.model.rename_doc import update_linked_doctypes
 from frappe.model.mapper import get_mapped_doc
 from frappe.utils.user import get_users_with_role
+from frappe.utils import now
 
 
 class Customer(TransactionBase):
@@ -58,12 +59,10 @@ class Customer(TransactionBase):
 		'''If customer created from Lead, update customer id in quotations, opportunities'''
 		self.update_lead_status()
 
+	
+
+
 	def validate(self):
-		#code for  veried date set
-		vs=frappe.db.sql("""select data from `tabVersion` where ref_doctype="Customer" and docname="{}"    """.format(self.name),as_dict=1)
-		if len(vs)!=0:
-			if  vs[0]['data'].find('Verified') and self.status=="Verified":
-				self.db_set("varified_date",frappe.utils.nowdate(), update_modified=False)
 		self.flags.is_new_doc = self.is_new()
 		self.flags.old_lead = self.lead_name
 		validate_party_accounts(self)
